@@ -1,4 +1,4 @@
-# JDE-Mid-Project
+# JDE-Mid-Project-TemaRed
 This is a tool to scrape Twitter data to explore the trend in social meida.
 
 **Starting:**

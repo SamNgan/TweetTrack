@@ -1,10 +1,4 @@
-#!/usr/bin/env python3
-"""
-Test psycopg with CockroachDB.
-"""
 import pandas as pd
-# df = pd.read_csv('twitter_scrape_word.csv')
-# print(df.iterrows)
 import logging
 import os
 import random
@@ -15,8 +9,9 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 import psycopg
 from psycopg.errors import SerializationFailure, Error
 from psycopg.rows import namedtuple_row
-# import testing
 
+
+data = pd.read_pickle('twitter_keyword_tesla_21185 .pkl')
 
 #Create table
 def create_table(conn):
@@ -25,10 +20,10 @@ def create_table(conn):
             "CREATE TABLE IF NOT EXISTS twitter_scrape (Tweet_id UUID PRIMARY KEY, UserScreenName VARCHAR, UserName VARCHAR, Timestamp TIMESTAMP, Text VARCHAR, Embedded_text VARCHAR, Emojis VARCHAR, Comments VARCHAR, Likes VARCHAR, Retweets VARCHAR, Image_link VARCHAR, Tweet_URL VARCHAR, Keyword VARCHAR)"
         )
 
-#加record DF->sql db
-def insert_record(conn, df):
+#Insert record data1->sql db
+def insert_record(conn, data):
     with conn.cursor() as cur:
-        for index, arr in enumerate(df.iterrows()):
+        for index, arr in enumerate(data.iterrows()):
             if index ==0:
                 continue
             id1 = uuid.uuid4()
@@ -36,7 +31,7 @@ def insert_record(conn, df):
             cur.execute("UPSERT INTO twitter_scrape (tweet_id, userscreenname, username, timestamp, text, embedded_text, emojis, comments, likes, retweets, image_link, tweet_URL, keyword) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (id1, record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7], record[8], record[9], record[10], record[11])
             )
 
-#清record <all>
+#delete record <all>
 def delete_accounts(conn):
     with conn.cursor() as cur:
         cur.execute("DELETE FROM twitter_scrape")
@@ -51,12 +46,12 @@ def print_record(conn):
             # print(row.tweet_id)
             print("count : {0}  ".format(row.count))
 
-#delete table!!!!!!唔好亂用!!!!!!!!!!!!
+#delete table!!!!!!
 def del_table(conn):
     with conn.cursor() as cur:
         cur.execute('DROP TABLE twitter_scrape')
 
-#run function
+# #run function
 def main():
     
     # try:
@@ -69,7 +64,8 @@ def main():
         # del_table(conn)
         # delete_accounts(conn)
         # create_table(conn)
-        # insert_record(conn, df)
+        # insert_record_hash(conn, data2)
+        # insert_record(conn, data)
         print_record(conn)
         conn.commit()
 
@@ -79,6 +75,6 @@ def main():
     #     logging.fatal(e)
     #     return
 
-#行邊個function
+#run which function
 if __name__ == "__main__":
     main()

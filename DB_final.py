@@ -55,7 +55,7 @@ def del_table(conn):
 def main():
     
     # try:
-        conn = psycopg.connect("postgresql://sum:M_Fdu8h4HmN7XAWfR-jRAw@mean-grivet-3788.8nk.cockroachlabs.cloud:26257/twitter_project_red?sslmode=verify-full", 
+        conn = psycopg.connect("postgresql://sum:<ENTER-SQL-USER-PASSWORD>@mean-grivet-3788.8nk.cockroachlabs.cloud:26257/twitter_project_red?sslmode=verify-full", 
                                application_name="$ docs_simplecrud_psycopg3", 
                                row_factory=namedtuple_row)
        
